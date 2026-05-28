@@ -1,5 +1,5 @@
 dataset=mimic3_50
-name=gki-icd
+name=gki-icd_no_guidance_bf16
 output_dir=models/$dataset/$name
 mkdir -p $output_dir
 cat $0 > $output_dir/train.sh
@@ -17,7 +17,7 @@ accelerate launch \
     --extra_code_description_file data/$dataset/extra_code_description.csv \
     --code_group_file data/$dataset/group_description.csv \
     --code_relation_file data/$dataset/code_hierarchy.csv \
-    --model_name_or_path models/RoBERTa-base-PM-M3-Voc-distill-align-hf \
+    --model_name_or_path ../../autodl-tmp/RoBERTa-base-PM-M3-Voc-hf \
     --max_length 8192 \
     --chunk_size 128 \
     --per_device_train_batch_size 1 \
@@ -27,7 +27,6 @@ accelerate launch \
     --num_warmup_steps 2000 \
     --use_cross_attention \
     --embed_code_query \
-    --use_guidance \
     --use_shuffle \
     --use_synonyms \
     --use_hierarchy \
