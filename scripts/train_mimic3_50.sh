@@ -39,4 +39,6 @@ accelerate launch \
     --find_best_threshold \
     --bf16 \
     --output_dir $output_dir
+
+# shutdown -h now
     
