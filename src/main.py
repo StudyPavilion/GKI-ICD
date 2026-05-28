@@ -17,8 +17,11 @@ from accelerate import Accelerator, DistributedDataParallelKwargs
 from swanlab.integration.accelerate import SwanLabTracker
 import transformers
 import datasets
+try:
+    from transformers import AdamW
+except ImportError:
+    from torch.optim import AdamW as AdamW
 from transformers import (
-    AdamW,
     AutoConfig,
     AutoTokenizer,
     AutoModel,
@@ -39,7 +42,10 @@ from evaluation import (
 
 
 def limit_threads(cpu_num):
-    cpu_num = 4
+    try:
+        cpu_num = int(cpu_num) if cpu_num is not None else 4
+    except (ValueError, TypeError):
+        cpu_num = 4
     os.environ["OMP_NUM_THREADS"] = str(cpu_num)
     os.environ["OPENBLAS_NUM_THREADS"] = str(cpu_num)
     os.environ["MKL_NUM_THREADS"] = str(cpu_num)
