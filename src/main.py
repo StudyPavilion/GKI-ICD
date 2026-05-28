@@ -328,7 +328,6 @@ def main():
             pin_memory=True,
             batch_size=64,
             num_workers=6,
-            prefetch_factor=2,
         )
 
     # Pretrained Model
@@ -375,7 +374,6 @@ def main():
             pin_memory=True,
             batch_size=args.per_device_train_batch_size,
             num_workers=6,
-            prefetch_factor=2,
         )
 
         dev_dataset = EHRDataset(
@@ -391,7 +389,6 @@ def main():
             pin_memory=True,
             batch_size=args.per_device_eval_batch_size,
             num_workers=6,
-            prefetch_factor=2,
         )
 
     test_dataset = EHRDataset(
@@ -407,7 +404,6 @@ def main():
         pin_memory=True,
         batch_size=args.per_device_eval_batch_size,
         num_workers=6,
-        prefetch_factor=2,
     )
 
     if args.num_train_epochs > 0:
