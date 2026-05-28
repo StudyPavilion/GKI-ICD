@@ -37,5 +37,6 @@ accelerate launch \
     --use_rdrop \
     --rdrop_alpha 10.0 \
     --find_best_threshold \
+    --bf16 \
     --output_dir $output_dir
     

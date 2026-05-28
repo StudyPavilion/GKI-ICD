@@ -191,15 +191,19 @@ def main():
 
     ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
 
+    accelerator_kwargs = {
+        "kwargs_handlers": [ddp_kwargs],
+    }
+    if args.bf16:
+        accelerator_kwargs["mixed_precision"] = "bf16"
+    
     if args.use_swanlab:
         tracker = SwanLabTracker(
             project=args.dataset,
             experiment_name=args.name,
         )
-        accelerator = Accelerator(
-            log_with=tracker,
-            kwargs_handlers=[ddp_kwargs],
-        )
+        accelerator_kwargs["log_with"] = tracker
+        accelerator = Accelerator(**accelerator_kwargs)
         accelerator.init_trackers(
             project_name=args.dataset,
             config={
@@ -218,11 +222,12 @@ def main():
                 "use_rdrop": args.use_rdrop,
                 "rdrop_alpha": args.rdrop_alpha,
                 "use_biaffine": args.use_biaffine,
+                "bf16": args.bf16,
             },
         )
 
     else:
-        accelerator = Accelerator(kwargs_handlers=[ddp_kwargs])
+        accelerator = Accelerator(**accelerator_kwargs)
     # Make one log on every process with the configuration for debugging.
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",

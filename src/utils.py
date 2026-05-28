@@ -248,6 +248,11 @@ def parse_args():
         type=int,
         default=4,
     )
+    parser.add_argument(
+        "--bf16",
+        action="store_true",
+        help="Use bfloat16 precision for training",
+    )
     args = parser.parse_args()
 
     return args
